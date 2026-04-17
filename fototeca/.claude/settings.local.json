@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php artisan *)",
+      "Bash(grep -E '\\\\.\\(php|blade\\\\.php|js|css|json|yml|yaml|env\\)$')"
+    ]
+  }
+}
