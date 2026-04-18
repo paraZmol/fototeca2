@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PhotoController as AdminPhotoController;
 use App\Http\Controllers\Admin\PhotographerController as AdminPhotographerController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\SubcategoryController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
@@ -32,6 +33,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::resource('fotos', AdminPhotoController::class)->parameters(['fotos' => 'photo']);
     Route::resource('fotografos', AdminPhotographerController::class)->parameters(['fotografos' => 'photographer']);
     Route::resource('categorias', CategoryController::class)->parameters(['categorias' => 'category']);
+    Route::resource('subcategorias', SubcategoryController::class)->parameters(['subcategorias' => 'subcategory']);
     Route::resource('ubicaciones', LocationController::class)->parameters(['ubicaciones' => 'location']);
     Route::resource('etiquetas', TagController::class)->parameters(['etiquetas' => 'tag']);
 

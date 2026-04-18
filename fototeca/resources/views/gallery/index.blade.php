@@ -110,14 +110,34 @@
                 </button>
                 <div x-show="open" x-cloak class="accordion-panel">
                     @foreach($rootCat->children as $child)
-                    <a href="{{ route('galeria', array_merge(request()->except(['category','page']), ['category' => $child->id])) }}"
-                       class="sidebar-leaf {{ request('category') == $child->id ? 'sidebar-leaf--active' : '' }}">
-                        <span style="margin-right:4px;opacity:0.5;">›</span>{{ $child->name }}
-                    </a>
+                        @if($child->subcategories->count() > 0)
+                        <div x-data="{ subOpen: {{ request('subcategory') && $child->subcategories->contains('id', request('subcategory')) ? 'true' : 'false' }} }" class="accordion-group sub">
+                            <button @click="subOpen = !subOpen" class="accordion-btn accordion-btn--sub" :class="{'accordion-btn--open': subOpen}">
+                                <span style="margin-right:4px;opacity:0.5;">›</span>
+                                <span class="accordion-btn-text">{{ $child->name }}</span>
+                                <svg class="accordion-chevron" :class="{'rotated': subOpen}" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="6 9 12 15 18 9"/>
+                                </svg>
+                            </button>
+                            <div x-show="subOpen" x-cloak class="accordion-panel">
+                                @foreach($child->subcategories as $sub)
+                                <a href="{{ route('galeria', array_merge(request()->except(['subcategory','category','page']), ['subcategory' => $sub->id])) }}"
+                                   class="sidebar-leaf {{ request('subcategory') == $sub->id ? 'sidebar-leaf--active' : '' }}">
+                                    <span class="leaf-dot"></span>{{ $sub->name }}
+                                </a>
+                                @endforeach
+                            </div>
+                        </div>
+                        @else
+                        <a href="{{ route('galeria', array_merge(request()->except(['category','subcategory','page']), ['category' => $child->id])) }}"
+                           class="sidebar-leaf {{ request('category') == $child->id ? 'sidebar-leaf--active' : '' }}">
+                            <span style="margin-right:4px;opacity:0.5;">›</span>{{ $child->name }}
+                        </a>
+                        @endif
                     @endforeach
                 </div>
             @else
-                <a href="{{ route('galeria', array_merge(request()->except(['category','page']), ['category' => $rootCat->id])) }}"
+                <a href="{{ route('galeria', array_merge(request()->except(['category','subcategory','page']), ['category' => $rootCat->id])) }}"
                    class="accordion-btn {{ request('category') == $rootCat->id ? 'accordion-btn--open' : '' }}" style="text-decoration:none;">
                     <svg class="accordion-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
                     <span class="accordion-btn-text">{{ $rootCat->name }}</span>
@@ -167,7 +187,7 @@
         </div>
 
         {{-- limpiar filtros --}}
-        @if(request()->has('location') || request()->has('category') || request()->has('period') || request()->has('q'))
+        @if(request()->has('location') || request()->has('category') || request()->has('subcategory') || request()->has('period') || request()->has('q'))
         <a href="{{ route('galeria') }}" class="clear-filters-btn">
             ✕ Limpiar filtros
         </a>

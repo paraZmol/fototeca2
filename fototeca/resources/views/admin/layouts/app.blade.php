@@ -590,6 +590,11 @@
                 <span class="nav-icon">▦</span> Categorías
             </a>
 
+            <a href="{{ route('admin.subcategorias.index') }}"
+               class="nav-item {{ request()->routeIs('admin.subcategorias.*') ? 'active' : '' }}">
+                <span class="nav-icon">▤</span> Subcategorías
+            </a>
+
             <a href="{{ route('admin.etiquetas.index') }}"
                class="nav-item {{ request()->routeIs('admin.etiquetas.*') ? 'active' : '' }}">
                 <span class="nav-icon">◇</span> Etiquetas

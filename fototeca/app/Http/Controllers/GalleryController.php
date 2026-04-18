@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Location;
 use App\Models\Category;
 use App\Models\Photo;
+use App\Models\Subcategory;
 use App\Enums\HistoricalPeriod;
 
 class GalleryController extends Controller
@@ -18,9 +19,9 @@ class GalleryController extends Controller
             ->orderBy('name')
             ->get();
 
-        // categorias raiz con sus hijos para el panel tematico
+        // categorias raiz con hijos y subcategorias para el panel tematico
         $rootCategories = Category::whereNull('parent_id')
-            ->with('allChildren')
+            ->with(['children.subcategories'])
             ->orderBy('name')
             ->get();
 
@@ -28,7 +29,7 @@ class GalleryController extends Controller
         $periods = HistoricalPeriod::cases();
 
         // query base de fotos publicadas
-        $query = Photo::with(['location', 'categories', 'photographers'])
+        $query = Photo::with(['location', 'categories', 'subcategories', 'photographers'])
             ->where('is_published', true);
 
         // filtro por busqueda de texto libre
@@ -66,6 +67,14 @@ class GalleryController extends Controller
             });
         }
 
+        // filtro por subcategoria
+        if ($request->filled('subcategory')) {
+            $subcategoryId = (int) $request->subcategory;
+            $query->whereHas('subcategories', function ($q) use ($subcategoryId) {
+                $q->where('subcategories.id', $subcategoryId);
+            });
+        }
+
         $photos = $query->orderByDesc('year')->paginate(24)->withQueryString();
 
         // etiqueta del contexto activo para el titulo de la galeria
@@ -88,6 +97,10 @@ class GalleryController extends Controller
         if ($request->filled('location')) {
             $loc = Location::find((int) $request->location);
             if ($loc) return $loc->name;
+        }
+        if ($request->filled('subcategory')) {
+            $sub = Subcategory::find((int) $request->subcategory);
+            if ($sub) return $sub->name;
         }
         if ($request->filled('category')) {
             $cat = Category::find((int) $request->category);

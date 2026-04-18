@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Location;
 use App\Models\Photo;
 use App\Models\Photographer;
+use App\Models\Subcategory;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -64,6 +65,8 @@ class PhotoController extends Controller
             'categories.*'     => ['exists:categories,id'],
             'tags'             => ['nullable', 'array'],
             'tags.*'           => ['exists:tags,id'],
+            'subcategories'    => ['nullable', 'array'],
+            'subcategories.*'  => ['exists:subcategories,id'],
         ]);
 
         if ($request->input('image_type') === 'file') {
@@ -98,20 +101,23 @@ class PhotoController extends Controller
             $photo->tags()->sync($request->input('tags'));
         }
 
+        $photo->subcategories()->sync($request->input('subcategories', []));
+
         return redirect()->route('admin.fotos.index')->with('success', 'Fotografía creada correctamente.');
     }
 
     public function edit(Photo $photo)
     {
-        $locations     = Location::orderBy('name')->get();
-        $photographers = Photographer::orderBy('name')->get();
-        $categories    = Category::whereNull('parent_id')->with('children')->orderBy('name')->get();
-        $tags          = Tag::orderBy('name')->get();
-        $periods       = HistoricalPeriod::cases();
+        $locations      = Location::orderBy('name')->get();
+        $photographers  = Photographer::orderBy('name')->get();
+        $categories     = Category::whereNull('parent_id')->with('children')->orderBy('name')->get();
+        $subcategories  = Subcategory::with('category')->orderBy('name')->get();
+        $tags           = Tag::orderBy('name')->get();
+        $periods        = HistoricalPeriod::cases();
 
-        $photo->load(['photographers', 'categories', 'tags']);
+        $photo->load(['photographers', 'categories', 'subcategories', 'tags']);
 
-        return view('admin.photos.edit', compact('photo', 'locations', 'photographers', 'categories', 'tags', 'periods'));
+        return view('admin.photos.edit', compact('photo', 'locations', 'photographers', 'categories', 'subcategories', 'tags', 'periods'));
     }
 
     public function update(Request $request, Photo $photo)
@@ -137,6 +143,8 @@ class PhotoController extends Controller
             'categories.*'     => ['exists:categories,id'],
             'tags'             => ['nullable', 'array'],
             'tags.*'           => ['exists:tags,id'],
+            'subcategories'    => ['nullable', 'array'],
+            'subcategories.*'  => ['exists:subcategories,id'],
         ]);
 
         if ($request->input('image_type') === 'file') {
@@ -170,6 +178,7 @@ class PhotoController extends Controller
         $photo->photographers()->sync($sync);
         $photo->categories()->sync($request->input('categories', []));
         $photo->tags()->sync($request->input('tags', []));
+        $photo->subcategories()->sync($request->input('subcategories', []));
 
         return redirect()->route('admin.fotos.index')->with('success', 'Fotografía actualizada correctamente.');
     }

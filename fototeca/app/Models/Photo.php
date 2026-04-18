@@ -50,6 +50,11 @@ class Photo extends Model
         return $this->belongsToMany(Tag::class, 'photo_tag');
     }
 
+    public function subcategories(): BelongsToMany
+    {
+        return $this->belongsToMany(Subcategory::class, 'photo_subcategory');
+    }
+
     public function getImageSrcAttribute(): string
     {
         if ($this->image_path) {

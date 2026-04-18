@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Location;
 use App\Models\Photo;
 use App\Models\Photographer;
+use App\Models\Subcategory;
 use App\Models\Tag;
 use Illuminate\Database\Seeder;
 
@@ -14,11 +15,12 @@ class PhotoSeeder extends Seeder
 {
     public function run(): void
     {
-        // Load all lookup tables upfront — 4 queries total instead of one per photo
-        $locations     = Location::pluck('id', 'name');
-        $photographers = Photographer::pluck('id', 'name');
-        $categories    = Category::pluck('id', 'slug');
-        $tags          = Tag::pluck('id', 'slug');
+        // Load all lookup tables upfront — 5 queries total instead of one per photo
+        $locations      = Location::pluck('id', 'name');
+        $photographers  = Photographer::pluck('id', 'name');
+        $categories     = Category::pluck('id', 'slug');
+        $tags           = Tag::pluck('id', 'slug');
+        $subcategories  = Subcategory::pluck('id', 'slug');
 
         $photos = [
             // ── PRE-TERREMOTO ────────────────────────────────────────────
@@ -36,6 +38,7 @@ class PhotoSeeder extends Seeder
                 'photographers'     => ['Adolfo Cárdenas Torres'],
                 'categories'        => ['plazas', 'pre-terremoto'],
                 'tags'              => ['huaraz', 'arquitectura-colonial'],
+                'subcategories'     => ['plaza-armas'],
             ],
             [
                 'title'             => 'Catedral de Huaraz desde el sur',
@@ -51,6 +54,7 @@ class PhotoSeeder extends Seeder
                 'photographers'     => ['Adolfo Cárdenas Torres'],
                 'categories'        => ['iglesias', 'pre-terremoto'],
                 'tags'              => ['huaraz', 'arquitectura-colonial'],
+                'subcategories'     => ['catedral-santiago'],
             ],
             [
                 'title'             => 'Mercado Central de Huaraz',
@@ -66,6 +70,7 @@ class PhotoSeeder extends Seeder
                 'photographers'     => ['María Elena Vásquez Robles'],
                 'categories'        => ['mercados', 'pre-terremoto'],
                 'tags'              => ['huaraz', 'mercado-tradicional', 'vida-cotidiana'],
+                'subcategories'     => ['mercado-central'],
             ],
             [
                 'title'             => 'Barrio La Soledad — Calle Real',
@@ -81,6 +86,7 @@ class PhotoSeeder extends Seeder
                 'photographers'     => ['Adolfo Cárdenas Torres'],
                 'categories'        => ['calles', 'pre-terremoto'],
                 'tags'              => ['huaraz', 'arquitectura-colonial'],
+                'subcategories'     => ['barrio-soledad'],
             ],
             [
                 'title'             => 'Panorámica del Valle del Santa',
@@ -96,6 +102,7 @@ class PhotoSeeder extends Seeder
                 'photographers'     => ['Heinrich Brüning'],
                 'categories'        => ['panoramicas', 'nevados'],
                 'tags'              => ['cordillera-blanca', 'huascaran', 'huaraz'],
+                'subcategories'     => ['vista-pumacayan', 'cordillera-blanca'],
             ],
             [
                 'title'             => 'Semana Santa en Huaraz',
@@ -111,6 +118,7 @@ class PhotoSeeder extends Seeder
                 'photographers'     => ['María Elena Vásquez Robles'],
                 'categories'        => ['fiestas', 'pre-terremoto'],
                 'tags'              => ['semana-santa', 'huaraz', 'fiesta-patronal'],
+                'subcategories'     => ['semana-santa'],
             ],
             [
                 'title'             => 'Puente Bedoya sobre el Río Santa',
@@ -126,6 +134,7 @@ class PhotoSeeder extends Seeder
                 'photographers'     => ['Autor Desconocido'],
                 'categories'        => ['puentes', 'pre-terremoto'],
                 'tags'              => ['huaraz', 'rio-santa'],
+                'subcategories'     => ['puente-bedoya'],
             ],
 
             // ── TERREMOTO 1970 ───────────────────────────────────────────
@@ -143,6 +152,7 @@ class PhotoSeeder extends Seeder
                 'photographers'     => ['Autor Desconocido'],
                 'categories'        => ['terremoto-1970', 'calles'],
                 'tags'              => ['terremoto-1970', 'huaraz'],
+                'subcategories'     => ['destruccion-centro', 'jr-luzuriaga'],
             ],
             [
                 'title'             => 'Yungay Sepultada bajo el Alud',
@@ -158,6 +168,7 @@ class PhotoSeeder extends Seeder
                 'photographers'     => ['Autor Desconocido'],
                 'categories'        => ['terremoto-1970'],
                 'tags'              => ['terremoto-1970'],
+                'subcategories'     => ['alud-yungay'],
             ],
             [
                 'title'             => 'Operaciones de Rescate en Huarupampa',
@@ -173,6 +184,7 @@ class PhotoSeeder extends Seeder
                 'photographers'     => ['Autor Desconocido'],
                 'categories'        => ['terremoto-1970', 'retratos'],
                 'tags'              => ['terremoto-1970', 'huaraz'],
+                'subcategories'     => ['rescate-ayuda', 'barrio-huarupampa'],
             ],
 
             // ── RECONSTRUCCIÓN ───────────────────────────────────────────
@@ -190,6 +202,7 @@ class PhotoSeeder extends Seeder
                 'photographers'     => ['María Elena Vásquez Robles'],
                 'categories'        => ['reconstruccion', 'calles'],
                 'tags'              => ['reconstruccion'],
+                'subcategories'     => ['nueva-yungay'],
             ],
             [
                 'title'             => 'Reconstrucción de la Plaza de Huaraz',
@@ -205,6 +218,7 @@ class PhotoSeeder extends Seeder
                 'photographers'     => ['Adolfo Cárdenas Torres'],
                 'categories'        => ['reconstruccion', 'plazas'],
                 'tags'              => ['reconstruccion', 'huaraz'],
+                'subcategories'     => ['obras-publicas', 'plaza-armas'],
             ],
             [
                 'title'             => 'Retrato — Familia Superviviente de Centenario',
@@ -220,6 +234,7 @@ class PhotoSeeder extends Seeder
                 'photographers'     => ['María Elena Vásquez Robles'],
                 'categories'        => ['retratos', 'reconstruccion'],
                 'tags'              => ['reconstruccion', 'retrato', 'vida-cotidiana'],
+                'subcategories'     => ['familias', 'viviendas-nuevas', 'barrio-centenario'],
             ],
 
             // ── SIGLO XXI ────────────────────────────────────────────────
@@ -237,6 +252,7 @@ class PhotoSeeder extends Seeder
                 'photographers'     => ['Autor Desconocido'],
                 'categories'        => ['nevados', 'panoramicas'],
                 'tags'              => ['cordillera-blanca', 'huascaran'],
+                'subcategories'     => ['huascaran'],
             ],
             [
                 'title'             => 'Feria de Artesanías de Huaraz',
@@ -252,6 +268,7 @@ class PhotoSeeder extends Seeder
                 'photographers'     => ['María Elena Vásquez Robles'],
                 'categories'        => ['fiestas', 'comercio', 'contemporaneo'],
                 'tags'              => ['vida-cotidiana', 'fiesta-patronal'],
+                'subcategories'     => ['ferias-artesanales'],
             ],
             [
                 'title'             => 'Lago Llanganuco entre los nevados',
@@ -267,6 +284,7 @@ class PhotoSeeder extends Seeder
                 'photographers'     => ['Autor Desconocido'],
                 'categories'        => ['rios', 'nevados', 'panoramicas'],
                 'tags'              => ['cordillera-blanca'],
+                'subcategories'     => ['lago-llanganuco'],
             ],
             [
                 'title'             => 'Escuela Rural en Recuay',
@@ -282,6 +300,7 @@ class PhotoSeeder extends Seeder
                 'photographers'     => ['Autor Desconocido'],
                 'categories'        => ['educacion', 'retratos', 'contemporaneo'],
                 'tags'              => ['retrato', 'vida-cotidiana'],
+                'subcategories'     => ['escuela-rural-recuay'],
             ],
             [
                 'title'             => 'Río Santa desde el puente Villón',
@@ -297,6 +316,7 @@ class PhotoSeeder extends Seeder
                 'photographers'     => ['Autor Desconocido'],
                 'categories'        => ['rios', 'contemporaneo'],
                 'tags'              => ['rio-santa', 'huaraz'],
+                'subcategories'     => ['rio-santa', 'puente-villon'],
             ],
         ];
 
@@ -333,6 +353,13 @@ class PhotoSeeder extends Seeder
             $photo->tags()->attach(
                 collect($data['tags'])
                     ->map(fn($slug) => $tags[$slug] ?? null)
+                    ->filter()
+                    ->all()
+            );
+
+            $photo->subcategories()->attach(
+                collect($data['subcategories'] ?? [])
+                    ->map(fn($slug) => $subcategories[$slug] ?? null)
                     ->filter()
                     ->all()
             );

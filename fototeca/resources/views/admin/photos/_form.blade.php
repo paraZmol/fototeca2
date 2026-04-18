@@ -222,6 +222,29 @@
             </div>
 
             <div class="form-divider"></div>
+            <div class="form-section-title">Subcategorías</div>
+
+            {{-- SUBCATEGORIES --}}
+            <div class="form-group full">
+                @php
+                    $assignedSubs = $isEdit ? $photo->subcategories->pluck('id')->toArray() : [];
+                    $selectedSubs = old('subcategories', $assignedSubs);
+                @endphp
+                <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:0.4rem; max-height:160px; overflow-y:auto; border:1px solid rgba(58,49,41,0.15); padding:0.8rem; background:var(--bg-crema);">
+                    @foreach($subcategories as $sub)
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="sub_{{ $sub->id }}" name="subcategories[]"
+                               value="{{ $sub->id }}" {{ in_array($sub->id, $selectedSubs) ? 'checked' : '' }}>
+                        <label for="sub_{{ $sub->id }}" style="font-size:0.78rem;">
+                            {{ $sub->name }}
+                            <span style="font-size:0.68rem; color:#999;">— {{ $sub->category->name }}</span>
+                        </label>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="form-divider"></div>
             <div class="form-section-title">Etiquetas</div>
 
             {{-- TAGS --}}

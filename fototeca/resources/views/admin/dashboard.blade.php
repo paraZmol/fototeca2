@@ -16,9 +16,10 @@
         ['label'=>'Fotografías','value'=>$stats['photos'],'sub'=>$stats['published'].' publicadas','color'=>'#5c6bc0','route'=>'admin.fotos.index'],
         ['label'=>'Fotógrafos','value'=>$stats['photographers'],'sub'=>'en la colección','color'=>'#c8a96e','route'=>'admin.fotografos.index'],
         ['label'=>'Categorías','value'=>$stats['categories'],'sub'=>'temáticas','color'=>'#2b2f35','route'=>'admin.categorias.index'],
-        ['label'=>'Ubicaciones','value'=>$stats['locations'],'sub'=>'geográficas','color'=>'#5c6bc0','route'=>'admin.ubicaciones.index'],
-        ['label'=>'Etiquetas','value'=>$stats['tags'],'sub'=>'palabras clave','color'=>'#c8a96e','route'=>'admin.etiquetas.index'],
-        ['label'=>'Usuarios','value'=>$stats['users'],'sub'=>'registrados','color'=>'#2b2f35','route'=>auth()->user()->isSuperAdmin() ? 'admin.usuarios.index' : null],
+        ['label'=>'Subcategorías','value'=>$stats['subcategories'],'sub'=>'específicas','color'=>'#5c6bc0','route'=>'admin.subcategorias.index'],
+        ['label'=>'Ubicaciones','value'=>$stats['locations'],'sub'=>'geográficas','color'=>'#c8a96e','route'=>'admin.ubicaciones.index'],
+        ['label'=>'Etiquetas','value'=>$stats['tags'],'sub'=>'palabras clave','color'=>'#2b2f35','route'=>'admin.etiquetas.index'],
+        ['label'=>'Usuarios','value'=>$stats['users'],'sub'=>'registrados','color'=>'#5c6bc0','route'=>auth()->user()->isSuperAdmin() ? 'admin.usuarios.index' : null],
     ];
     @endphp
 
@@ -92,6 +93,7 @@
             <a href="{{ route('admin.fotos.create') }}" class="btn btn-primary" style="text-align:center;">+ Nueva fotografía</a>
             <a href="{{ route('admin.fotografos.create') }}" class="btn btn-secondary" style="text-align:center;">+ Nuevo fotógrafo</a>
             <a href="{{ route('admin.categorias.create') }}" class="btn btn-secondary" style="text-align:center;">+ Nueva categoría</a>
+            <a href="{{ route('admin.subcategorias.create') }}" class="btn btn-secondary" style="text-align:center;">+ Nueva subcategoría</a>
             <a href="{{ route('admin.etiquetas.create') }}" class="btn btn-secondary" style="text-align:center;">+ Nueva etiqueta</a>
             <a href="{{ route('admin.ubicaciones.create') }}" class="btn btn-secondary" style="text-align:center;">+ Nueva ubicación</a>
             @if(auth()->user()->isSuperAdmin())

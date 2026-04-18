@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             LocationSeeder::class,
             PhotographerSeeder::class,
             CategorySeeder::class,
+            SubcategorySeeder::class,
             TagSeeder::class,
             PhotoSeeder::class,
         ]);
